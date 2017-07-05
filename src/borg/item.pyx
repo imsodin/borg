@@ -298,7 +298,7 @@ class ArchiveItem(PropDict):
 
     version = PropDict._make_property('version', int)
     name = PropDict._make_property('name', str, 'surrogate-escaped str', encode=safe_encode, decode=safe_decode)
-    items = PropDict._make_property('items', list)
+    items = PropDict._make_property('items', list)     # list of chunk ids (i.e. NOT directly items)
     cmdline = PropDict._make_property('cmdline', list)  # list of s-e-str
     hostname = PropDict._make_property('hostname', str, 'surrogate-escaped str', encode=safe_encode, decode=safe_decode)
     username = PropDict._make_property('username', str, 'surrogate-escaped str', encode=safe_encode, decode=safe_decode)

@@ -195,7 +195,7 @@ class Archiver:
 
     @staticmethod
     def compare_chunk_contents(chunks1, chunks2):
-        """Compare two chunk iterators (like returned by :meth:`.DownloadPipeline.fetch_many`)"""
+        """Return whether two chunk iterators are equal (like returned by :meth:`.DownloadPipeline.fetch_many`)."""
         end = object()
         alen = ai = 0
         blen = bi = 0

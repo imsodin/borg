@@ -333,10 +333,10 @@ class FuseOperations(llfuse.Operations):
                     self.items[inode] = item
                     continue
             segments = prefix + path.split(b'/')
-            parent = 1
+            parent_inode = 1          # root inode
             for segment in segments[:-1]:
-                parent = self.process_inner(segment, parent)
-            self.process_leaf(segments[-1], item, parent, prefix, is_dir, item_inode)
+                parent_inode = self.process_inner(segment, parent_inode)
+            self.process_leaf(segments[-1], item, parent_inode, prefix, is_dir, item_inode)
         duration = time.perf_counter() - t0
         logger.debug('fuse: process_archive completed in %.1f s for archive %s', duration, archive.name)
 
@@ -399,13 +399,13 @@ class FuseOperations(llfuse.Operations):
             self.contents[parent][name] = inode
 
     def process_inner(self, name, parent_inode):
+        """Finds or creates directory `name` within the directory with `parent_inode` and returns its inode."""
         dir = self.contents[parent_inode]
         if name in dir:
-            inode = dir[name]
-        else:
-            inode = self._create_dir(parent_inode)
-            if name:
-                dir[name] = inode
+            return dir[name]
+        inode = self._create_dir(parent_inode)
+        if name:            # What does this prevent and what does the line above do in that case?
+            dir[name] = inode
         return inode
 
     def allocate_inode(self):
